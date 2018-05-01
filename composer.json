@@ -1,0 +1,28 @@
+{
+  "name": "gie/facetbundle",
+  "description": "GieFacetBundle helps is a set of helpers to create search Facets, and perform sorl queries with those facets",
+  "type": "ezplatform-bundle",
+  "keywords": [
+    "ezplatform",
+    "ezpublish",
+    "facets",
+    "tags"
+  ],
+  "license": "GPL-2.0",
+  "authors": [
+    {
+      "name": "Jean-Luc Chassaing"
+    }
+  ],
+  "require": {
+    "php": "^5.6|^7.1",
+    "ezsystems/ezpublish-kernel": "^6.11@dev|^7.0@dev",
+    "ezsystems/ezplatform-solr-search-engine": "^1.4@dev",
+    "netgen/tagsbundle": "^3.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Gie\\FacetBundle\\": "./src/Gie"
+    }
+  }
+}

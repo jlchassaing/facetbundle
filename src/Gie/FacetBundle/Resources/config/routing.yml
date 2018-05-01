@@ -1,0 +1,3 @@
+gc_gie_tag_facet_homepage:
+    path:     /
+    defaults: { _controller: GCGieTagFacetBundle:Default:index }

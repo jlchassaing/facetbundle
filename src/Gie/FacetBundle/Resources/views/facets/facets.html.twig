@@ -1,0 +1,40 @@
+<div class="block facet">
+    <div class="block-title">
+        <h2>Filtrez les contenus</h2>
+    </div>
+    <div class="block-content">
+        <ul>
+            {% set queryString = {'facet':app.request.query.get('facet')} %}
+
+
+            {% for name,facet in facets %}
+               {% if facet| length > 0 %}
+                <li class="facet-group">
+                    {# format facet : &facet=type:image;type:media;truc #}
+                    <h3>{{ name }}</h3>
+                    <ul>
+                        {% for data in facet %}
+                            <li class="{{ data.selected ? 'selected':'unselected' }} {{ data.count == 0 ? 'deactivate':'' }}" >
+                                {% if data.selected %}
+
+                                    <a href="{{ path(routeName, queryString|merge({'facet':data.querystring})) }}"> {{ data.name }}</a> ({{ data.count }})
+                                {% else %}
+
+                                    {% if data.count %}
+                                    <a href="{{ path(routeName, queryString|merge({'facet':data.querystring})) }}"> {{ data.name }}</a>
+                                    {% else %}
+                                            {{ data.name }}
+                                    {% endif %}
+                                    ({{ data.count }})
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+
+
+</div>
