@@ -68,7 +68,7 @@ class SolrFieldSearchHelper extends FacetSearchHelper
 
     function canVisit( Facet $facet )
     {
-        if ($facet instanceof SolrFieldFacet && $facet->field == $this->params['field'])
+        if ($facet instanceof SolrFieldFacet && $facet->field === $this->params['field'])
         {
             return true;
         }
