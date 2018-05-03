@@ -84,3 +84,5 @@ array:2 [▼
 
 ## Adding a new facet
 
+You can add new facets in a few steps.
+
