@@ -79,9 +79,10 @@ abstract class FacetSearchHelper implements FacetSearchHelperInterface
 
             $conf[]  = ['name' => $formatedValue['label'],
                         'key'  => $name."_".$id,
-                        'count' => isset($facetAfterFilter->entries[$id]) ?$facetAfterFilter->entries[$id] : 0,
+                        'count' => isset($facetAfterFilter->entries[$id]) ?$facetAfterFilter->entries[$id] : $facet->entries[$id],
                         'querystring' => $queryString,
-                        'selected' => $selected
+                        'facetkey' => $name.":".$formatedValue['identifier'],
+                        'selected' => $selected,
                         ];
 
         }
