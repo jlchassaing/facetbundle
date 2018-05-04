@@ -6,9 +6,9 @@
  * Time: 14:30
  */
 
-namespace Gie\FacetBuilder\Pagination\Pagerfanta;
+namespace Gie\FacetBundle\Pagination\Pagerfanta;
 
-use Gie\FacetBuilder\Pagination\Pagerfanta\ContentSearchHitAdapter as DefaultContentSearchAdapter;
+use Gie\FacetBundle\Pagination\Pagerfanta\ContentSearchHitAdapter as DefaultContentSearchAdapter;
 
 /**
  * Class ContentSearchAdapter

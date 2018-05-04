@@ -6,7 +6,7 @@
  * Time: 14:34
  */
 
-namespace Gie\FacetBuilder\Pagination\Pagerfanta;
+namespace Gie\FacetBundle\Pagination\Pagerfanta;
 
 use eZ\Publish\API\Repository\Values\Content\Search\SearchResult;
 use eZ\Publish\Core\Pagination\Pagerfanta\ContentSearchHitAdapter as DefaultContentSearchHitAdapter;
