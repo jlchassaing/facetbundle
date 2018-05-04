@@ -99,23 +99,16 @@ class FacetSearch
     public function buildFacetFilter()
     {
         $facetFilterString = $this->getFacetFilterString();
-
+        $seachFilterRegex = '/(\w+):([^;]+)/i';
         $facetFilters = [];
-        if ($facetFilterString !== "")
+
+        if (preg_match_all($seachFilterRegex,$facetFilterString,$filters))
         {
-            $items = explode(";", trim(str_replace(";;",";",$facetFilterString),";"));
-            $facetFilters = [];
-            if (count($items))
+            foreach ($filters[1] as $key=>$filterKey)
             {
-                foreach ( $items as $f )
-                {   // seperate only the key from the value
-                    $t = explode(":", $f, 2);
-                    if (count($t))
-                        $facetFilters[$t[0]][] = $t[1];
-                }
+                $facetFilters[$filterKey][] = $filters[2][$key];
             }
         }
-
         return $facetFilters;
     }
 
