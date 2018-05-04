@@ -18,4 +18,11 @@ use eZ\Publish\API\Repository\Values\Content\Query\FacetBuilder;
  */
 class CustomDateFacetBuilder extends FacetBuilder
 {
+    public $field;
+
+    public $start;
+
+    public $end;
+
+    public $gap;
 }

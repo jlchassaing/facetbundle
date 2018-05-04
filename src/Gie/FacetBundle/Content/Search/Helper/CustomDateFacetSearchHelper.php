@@ -15,6 +15,8 @@ use eZ\Publish\API\Repository\Values\Content\Search\Facet;
 
 use Gie\FacetBundle\Content\Values\Search\Facet\CustomDateFacet;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class CustomDateFacetSearchHelper extends FacetSearchHelper
 {
@@ -63,7 +65,14 @@ class CustomDateFacetSearchHelper extends FacetSearchHelper
 
     function getFacetIdentifier()
     {
-        return "custom_date";
+        $id = preg_replace('/\s+/',
+            '_',
+            strtolower(iconv('UTF8',
+                'ASCII//TRANSLIT//IGNORE',
+                $this->params['name'])
+            )
+        );
+        return $id;
     }
 
     function getFacetFilter()
@@ -74,7 +83,7 @@ class CustomDateFacetSearchHelper extends FacetSearchHelper
 
     function canVisit( Facet $facet )
     {
-        if ($facet instanceof CustomDateFacet)
+        if ($facet instanceof CustomDateFacet && $facet->name === $this->getName())
         {
             return true;
         }

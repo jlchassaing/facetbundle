@@ -21,4 +21,6 @@ class CustomDateFacet extends Facet
      * @var array
      */
     public $entries;
+
+    public $field;
 }

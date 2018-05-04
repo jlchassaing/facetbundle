@@ -22,6 +22,9 @@ use Gie\FacetBundle\Content\Values\Search\Facet;
  */
 class CustomDateType extends FacetBuilderVisitor implements FacetFieldVisitor
 {
+
+    const DATE_RANGE = '{!ex=dt key=%s facet.range.start="%s" facet.range.end="%s" facet.range.gap="%s"}%s';
+
     /**
      * {@inheritdoc}.
      */
@@ -30,7 +33,7 @@ class CustomDateType extends FacetBuilderVisitor implements FacetFieldVisitor
         return new Facet\CustomDateFacet(
             array(
                 'name' => $facetBuilder->name,
-                'entries' => $this->mapData($data),
+                'entries' => $this->mapData($data['counts']),
             )
         );
     }
@@ -43,27 +46,18 @@ class CustomDateType extends FacetBuilderVisitor implements FacetFieldVisitor
         return $facetBuilder instanceof CustomDateFacetBuilder;
     }
 
-
-    /*
-     *
-     * facet=on&fl=custom_date_dt&facet.range=custom_date_dt&facet.range.gap=%2BMONTH&indent=on&wt=json
-     *
-     */
-
     /**
      * {@inheritdoc}.
      */
     public function visitBuilder(FacetBuilder $facetBuilder, $fieldId)
     {
-        return array(
-            'facet.field' => "{!ex=dt key=${fieldId}}custom_date_dt",
-            'f.custom_date_dt.facet.limit' => $facetBuilder->limit,
-            'f.custom_date_dt.facet.mincount' => $facetBuilder->minCount,
-            'f.custom_date_dt.facet.range.start' => 'NOW/YEAR-3YEARS',
-            'f.custom.date_dt.facet.range.end' => 'NOW/MONTH+1YEAR',
-            'f.custom.date_dt.facet.range.gap' => '+1YEAR',
-            'f.custom.date_dt.facet.range.other' => 'all',
-
-        );
+        return [
+            "facet.range" => sprintf(self::DATE_RANGE,
+                $fieldId,
+                $facetBuilder->start,
+                $facetBuilder->end,
+                $facetBuilder->gap,
+                $facetBuilder->field),
+            ];
     }
 }
