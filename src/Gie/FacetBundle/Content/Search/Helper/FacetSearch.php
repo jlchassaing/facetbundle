@@ -56,13 +56,12 @@ class FacetSearch
     /**
      * @param $facetsSettings
      * @param Request $request
-     * @param boolean $doNotExtractFromRequest
      * @return FacetSearch
      */
-    public function init($facetsSettings, Request $request, $doNotExtractFromRequest = false)
+    public function init($facetsSettings, Request $request = null)
     {
         return $this->registerFacetHelpers($facetsSettings)
-                    ->extractFacetFilterString($request, $doNotExtractFromRequest);
+                    ->extractFacetFilterString($request);
     }
 
     /**
@@ -118,13 +117,12 @@ class FacetSearch
     /**
      * extract the facet querystring value
      * @param Request $request
-     * @parma boolean $doNotExtractFromRequest
      *
      * @return FacetSearch
      */
-    public function extractFacetFilterString(Request $request, $doNotExtractFromRequest = false)
+    public function extractFacetFilterString(Request $request = null)
     {
-        if ($doNotExtractFromRequest)
+        if ($request === null)
         {
             return $this;
         }

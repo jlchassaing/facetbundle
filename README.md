@@ -21,6 +21,8 @@ FacetCongig objects are build with the facet helper alias a title and an array o
 The solr_field facet can facet the query on any solr field defined by the field parameter.
 The format function can help format the value of user display 
 
+The init method will also look at the queryString and init the selected facets. If you don't want it to do so, you can avoid passing it the request object. And then use de setFacetFilters() method to set what ever selected facet you want. 
+
 ```php
 
 $facetSearchHelper = $this->container->get('gie.facet.search.helper')
@@ -56,12 +58,34 @@ once done, build your query without any facet or filter condition and pass it do
  $query = $facetSearchHelper->addQueryFacets($query);
 ````
 
-### 3. Set the pager with PagerFanta
+### 3. get the facet array that will be sent to the template
 
-The bundle has a ContentSearchAdapter wish extends the default ez one to deal with facets.
-So you can use PagerFanta and pass it the Gie\FacetBuilder\Pagination\Pagerfanta\ContentSearchAdapter
+After updating the query with the facet settings and the filters from the eventually selected facets, you need to call the getFacets method to get the facets array.
 
-### 4. pass the facets to the template
+#### 1. Using PagerFanta
+
+If you need the PagerFanta tool then you can pass it to the facetHelper.
+
+When using PagerFanta, you'll have to use the bundle ContentSearchAdapter otherwise you won't be able to get the facets from the query beeing executed.
+
+```php
+use Gie\FacetBuilder\Pagination\Pagerfanta\ContentSearchAdapter;
+```
+
+```php
+$facets = $facetSearchHelper->getFacetsFromPager($pager);
+```
+
+#### 2. From a QueryResult
+
+If you are just using a ContentQuery then you can pass the result to the facetHelper and call the 
+
+```php
+$facets = $facetHelper->getFacetsFromQuery($queryResult);
+```
+
+
+#### 4. pass the facets to the template
 
 Last thing you'll have to do is retrieve  the facets array that you'll pass to the template to display them as you want.
 
@@ -82,7 +106,4 @@ array:2 [▼
 ]
 ````
 
-## Adding a new facet
-
-You can add new facets in a few steps.
 
