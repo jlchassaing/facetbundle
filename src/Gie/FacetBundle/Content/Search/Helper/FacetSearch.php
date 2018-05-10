@@ -11,6 +11,7 @@ namespace Gie\FacetBundle\Content\Search\Helper;
 use eZ\Publish\API\Repository\SearchService;
 use eZ\Publish\API\Repository\Values\Content\LocationQuery;
 use eZ\Publish\API\Repository\Values\Content\Query;
+use eZ\Publish\API\Repository\Values\Content\Search\SearchResult;
 use Gie\FacetBuilder\Pagination\Pagerfanta\ContentSearchAdapter;
 use Pagerfanta\Pagerfanta;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,13 +56,13 @@ class FacetSearch
     /**
      * @param $facetsSettings
      * @param Request $request
-     *
+     * @param boolean $doNotExtractFromRequest
      * @return FacetSearch
      */
-    public function init($facetsSettings, Request $request)
+    public function init($facetsSettings, Request $request, $doNotExtractFromRequest = false)
     {
         return $this->registerFacetHelpers($facetsSettings)
-                    ->extractFacetFilterString($request);
+                    ->extractFacetFilterString($request, $doNotExtractFromRequest);
     }
 
     /**
@@ -74,6 +75,7 @@ class FacetSearch
      */
     public function registerFacetHelpers( $facetConfigs)
     {
+        $this->searchHelpers = [];
         foreach ( $facetConfigs as $facetConfig )
         {
             $facetHelper = $this->facetLoader->getFacetHelper($facetConfig->getAlias());
@@ -116,17 +118,35 @@ class FacetSearch
     /**
      * extract the facet querystring value
      * @param Request $request
+     * @parma boolean $doNotExtractFromRequest
      *
      * @return FacetSearch
      */
-    public function extractFacetFilterString(Request $request)
+    public function extractFacetFilterString(Request $request, $doNotExtractFromRequest = false)
     {
-        if ($this->facetFilterString === null)
+        if ($doNotExtractFromRequest)
         {
-            $this->facetFilterString = $request->get(self::FACET_QUERYSTRING_IDENTIFIER, '');
+            return $this;
         }
-        $facetFilters = $this->buildFacetFilter();
+        else{
+            if ($this->facetFilterString === null)
+            {
+                $this->facetFilterString = $request->get(self::FACET_QUERYSTRING_IDENTIFIER, '');
+            }
+            $facetFilters = $this->buildFacetFilter();
 
+            return $this->appendHandlerFacetFilters($facetFilters);
+        }
+
+
+    }
+
+    /**
+     * @param $facetFilters
+     * @return $this
+     */
+    private function appendHandlerFacetFilters($facetFilters)
+    {
         foreach ( $this->searchHelpers as $helper )
         {
             if (isset($facetFilters[$helper->getFacetIdentifier()]))
@@ -134,7 +154,6 @@ class FacetSearch
                 $helper->setSelectedFacetEntries($facetFilters[$helper->getFacetIdentifier()]);
             }
         }
-
         return $this;
     }
 
@@ -155,7 +174,7 @@ class FacetSearch
      */
     protected function hasFacetQuery()
     {
-        return !is_null($this->facetFilterString);
+        return  count($this->facetFilters) > 0 ;
     }
 
     /**
@@ -171,6 +190,28 @@ class FacetSearch
 
         return $this->facetFilters;
     }
+
+    /**
+     *
+     * add a new facetfilter
+     * @param $type
+     * @param $value
+     */
+    public function addFacetFilter($type, $value)
+    {
+        $this->facetFilters[$type][] = $value;
+
+        return $this->appendHandlerFacetFilters($this->facetFilters);
+    }
+
+
+    public function setFacetFilter($facetFilters)
+    {
+        $this->facetFilters = $facetFilters;
+        return $this->appendHandlerFacetFilters($this->facetFilters);
+    }
+
+
 
     /**
      * add facetFilters to query
@@ -243,16 +284,31 @@ class FacetSearch
     }
 
     /**
+     * Get facets array from the pagerfanta object
      * @param Pagerfanta $pager
      *
      * @return array
      */
     public function getFacetsFromPager(Pagerfanta $pager)
     {
-        $facets = [];
-
         $pager->getNbResults();
-        $facetsToDisplayAfterFilter = $this->getContentSearchAdapter($pager)->getFacets();
+
+        return $this->buildFacets($this->getContentSearchAdapter($pager)->getFacets());
+    }
+
+    /**
+     * get facets array fomr the searchContent result
+     * @param SearchResult $queryResult
+     * @return array
+     */
+    public function getFacetsFromQuery(SearchResult $queryResult)
+    {
+        return $this->buildFacets($queryResult->facets);
+    }
+
+    private function buildFacets($facetsToDisplayAfterFilter)
+    {
+        $facets = [];
 
         foreach ( $this->defaultFacets as $id=> $facet )
         {
