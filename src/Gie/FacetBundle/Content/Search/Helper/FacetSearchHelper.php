@@ -55,6 +55,11 @@ abstract class FacetSearchHelper implements FacetSearchHelperInterface
         $this->selectedEntries = $entries;
     }
 
+    function resetSelectedFacetEnties()
+    {
+        $this->selectedEntries = [];
+    }
+
     function formatFacet( Facet $facet, $facetFilterString, Facet $facetAfterFilter )
     {
         $name = $this->getFacetIdentifier();
