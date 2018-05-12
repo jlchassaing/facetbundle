@@ -89,7 +89,7 @@ class FacetSearch
     }
 
     /**
-     * @param Request $request
+     * @param string $facetFilterString
      * extract facet setting  passed threw the query string
      *
      * format facet queryString :
@@ -97,9 +97,8 @@ class FacetSearch
      * facet=nom_facet:valeur;nom_facet:valeur2;nom_face2:valeur3
      * @return array
      */
-    public function buildFacetFilter()
+    public function buildFacetFilter($facetFilterString = "")
     {
-        $facetFilterString = $this->getFacetFilterString();
         $seachFilterRegex = '/(\w+):([^;]+)/i';
         $facetFilters = [];
 
@@ -122,20 +121,8 @@ class FacetSearch
      */
     public function extractFacetFilterString(Request $request = null)
     {
-        if ($request === null)
-        {
-            return $this;
-        }
-        else{
-            if ($this->facetFilterString === null)
-            {
-                $this->facetFilterString = $request->get(self::FACET_QUERYSTRING_IDENTIFIER, '');
-            }
-            $facetFilters = $this->buildFacetFilter();
-
-            return $this->appendHandlerFacetFilters($facetFilters);
-        }
-
+        $facetFilters = $this->buildFacetFilter($this->getFacetFilterStringFromRequest($request));
+        return $this->appendHandlerFacetFilters($facetFilters);
 
     }
 
@@ -143,13 +130,20 @@ class FacetSearch
      * @param $facetFilters
      * @return $this
      */
-    private function appendHandlerFacetFilters($facetFilters)
+    private function appendHandlerFacetFilters(array $facetFilters = [])
     {
-        foreach ( $this->searchHelpers as $helper )
+        if (count($facetFilters > 0))
         {
-            if (isset($facetFilters[$helper->getFacetIdentifier()]))
+            $this->facetFilters = $facetFilters;
+            foreach ( $this->searchHelpers as $helper )
             {
-                $helper->setSelectedFacetEntries($facetFilters[$helper->getFacetIdentifier()]);
+                if (isset($facetFilters[$helper->getFacetIdentifier()]))
+                {
+                    $helper->setSelectedFacetEntries($facetFilters[$helper->getFacetIdentifier()]);
+                }
+                else{
+                    $helper->resetSelectedFacetEnties();
+                }
             }
         }
         return $this;
@@ -161,8 +155,12 @@ class FacetSearch
      *
      * @return mixed|string
      */
-    protected function getFacetFilterString()
+    protected function getFacetFilterStringFromRequest(Request $request = null)
     {
+        if ($this->facetFilterString === null && $request !== null)
+        {
+            $this->facetFilterString =  $request->get(self::FACET_QUERYSTRING_IDENTIFIER, '');
+        }
         return $this->facetFilterString;
     }
 
@@ -304,7 +302,11 @@ class FacetSearch
         return $this->buildFacets($queryResult->facets);
     }
 
-    private function buildFacets($facetsToDisplayAfterFilter)
+    /**
+     * @param array $facetsToDisplayAfterFilter
+     * @return array
+     */
+    private function buildFacets(array $facetsToDisplayAfterFilter)
     {
         $facets = [];
 
