@@ -1,1 +1,48 @@
 language: php
+
+cache:
+    directories:
+        - vendor
+
+matrix:
+    # mark as finished before allow_failures are run
+    fast_finish: true
+    include:
+        - php: 5.6
+          env: CONFIG="phpunit.xml" COVERAGE="unit"
+        - php: 7.1
+          env: CONFIG="phpunit.xml" COVERAGE="unit"
+        - php: 7.2
+          env: CONFIG="phpunit.xml" COVERAGE="unit"
+
+# test only master (+ pull requests)
+branches:
+  only:
+    - master
+
+# make sure to update composer to latest available version
+before_install:
+    - composer self-update
+
+# install dependencies
+# removing vendor/ocramius as generated versions can clash with install process due to usage of prefer-source
+#install: rm -rf vendor/ocramius && travis_wait composer install --prefer-source
+
+# execute phpunit as the script command
+script:
+  - ./vendor/bin/phpunit -d memory_limit=-1 --colors -c $CONFIG
+
+# disable mail notifications
+#notification:
+#  email: false
+
+# reduce depth (history) of git checkout
+#git:
+#  depth: 30
+
+# we don't need sudo
+#sudo: false
+
+# send coverage to codecov.io
+#after_success:
+#  - bash <(curl -s https://codecov.io/bash) -F $COVERAGE
