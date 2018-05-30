@@ -26,6 +26,8 @@ class FacetConfig implements FacetConfigInterface
      */
     public function __construct($alias, $title, $params = [])
     {
+        if (is_null($alias)) throw new \InvalidArgumentException("an alias must be set");
+        if (is_array($alias)) throw new \InvalidArgumentException("alias must be a string");
         $this->alias = $alias;
         $this->title = $title;
         $this->params = $params;

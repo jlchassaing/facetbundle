@@ -60,6 +60,7 @@ class FacetSearch
      */
     public function init($facetsSettings, Request $request = null)
     {
+        if ($facetsSettings)
         return $this->registerFacetHelpers($facetsSettings)
                     ->extractFacetFilterString($request);
     }
@@ -72,16 +73,21 @@ class FacetSearch
      * format for params :
      * [facet_alias => [facet_Params]]
      */
-    public function registerFacetHelpers( $facetConfigs)
+    public function registerFacetHelpers( $facetConfigs )
     {
         $this->searchHelpers = [];
         foreach ( $facetConfigs as $facetConfig )
         {
-            $facetHelper = $this->facetLoader->getFacetHelper($facetConfig->getAlias());
-            if ($facetHelper instanceof FacetSearchHelperInterface)
+            if ($facetConfig instanceof FacetConfig)
             {
-                $this->searchHelpers[] = $facetHelper->setQueryFacetBuilderParams($facetConfig->getTitle(), $facetConfig->getParams());
+                $facetHelper = $this->facetLoader->getFacetHelper($facetConfig->getAlias());
+                if ($facetHelper instanceof FacetSearchHelperInterface)
+                {
+                    $this->searchHelpers[] = $facetHelper->setQueryFacetBuilderParams($facetConfig->getTitle(), $facetConfig->getParams());
+                }
             }
+            else throw new \InvalidArgumentException("FacetConfigs must be an array of ". FacetConfig::class);
+
 
         }
 
