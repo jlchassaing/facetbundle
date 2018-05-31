@@ -17,6 +17,7 @@
   "require": {
     "php": "^5.6|^7.1",
     "ezsystems/ezpublish-kernel": "^6.11@dev|^7.0@dev",
+    "symfony/symfony": "^2.8.13 || ^3.1.6",
     "ezsystems/ezplatform-solr-search-engine": "^1.4@dev",
     "netgen/tagsbundle": "^3.1"
   },
@@ -24,5 +25,8 @@
     "psr-4": {
       "Gie\\FacetBundle\\": "src/"
     }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^5.4"
   }
 }
