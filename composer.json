@@ -1,5 +1,5 @@
 {
-  "name": "gie/facetbundle",
+  "name": "jlchassaing/facetbundle",
   "description": "GieFacetBundle helps is a set of helpers to create search Facets, and perform sorl queries with those facets",
   "type": "ezplatform-bundle",
   "keywords": [
