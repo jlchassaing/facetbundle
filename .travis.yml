@@ -1,48 +1,37 @@
+
 language: php
 
 cache:
-    directories:
-        - vendor
+  directories:
+    - $HOME/.composer/cache
+
+php:
+    - 5.6
+    - 7.0
+    - 7.1
+
+sudo: false
+
+branches:
+    only:
+        - master
+        - /^\d+\.\d+$/
+
+env:
+    - EZ_KERNEL_VERSION=^6.0
 
 matrix:
-    # mark as finished before allow_failures are run
-    fast_finish: true
     include:
-        - php: 5.6
-          env: CONFIG="phpunit.xml" COVERAGE="unit"
+        - php: 7.0
+          env: EZ_KERNEL_VERSION=^6.0
         - php: 7.1
-          env: CONFIG="phpunit.xml" COVERAGE="unit"
-        - php: 7.2
-          env: CONFIG="phpunit.xml" COVERAGE="unit"
+          env: EZ_KERNEL_VERSION=^6.9
 
-# test only master (+ pull requests)
-branches:
-  only:
-    - master
+install:
+    - phpenv config-rm xdebug.ini
+    - echo 'memory_limit = -1' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+    - composer require "ezsystems/ezpublish-kernel:${EZ_KERNEL_VERSION}" --no-update
+    - composer install
 
-# make sure to update composer to latest available version
-before_install:
-    - composer self-update
-
-# install dependencies
-# removing vendor/ocramius as generated versions can clash with install process due to usage of prefer-source
-#install: rm -rf vendor/ocramius && travis_wait composer install --prefer-source
-
-# execute phpunit as the script command
 script:
-  - ./vendor/bin/phpunit -d memory_limit=-1 --colors -c $CONFIG
-
-# disable mail notifications
-#notification:
-#  email: false
-
-# reduce depth (history) of git checkout
-#git:
-#  depth: 30
-
-# we don't need sudo
-#sudo: false
-
-# send coverage to codecov.io
-#after_success:
-#  - bash <(curl -s https://codecov.io/bash) -F $COVERAGE
+- php vendor/bin/phpunit
