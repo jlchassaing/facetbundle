@@ -1,6 +1,8 @@
 <?php
 
-$autoloadFile = realpath(__DIR__.'/../../autoload.php');
+$autoloadFile = realpath(__DIR__.'/vendor/autoload.php');
+
+
 
 if (!file_exists($autoloadFile)) {
     throw new RuntimeException('Install dependencies to run test suite.');
