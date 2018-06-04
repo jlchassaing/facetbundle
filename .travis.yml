@@ -17,12 +17,12 @@ branches:
         - /^\d+\.\d+$/
 
 env:
-    - EZ_KERNEL_VERSION=^6.0
+    - EZ_KERNEL_VERSION=^6.0 COVERAGE="unit"
 
 matrix:
     include:
         - php: 7.1
-          env: EZ_KERNEL_VERSION=^6.9
+          env: EZ_KERNEL_VERSION=^6.9  COVERAGE="unit"
 
 install:
     - phpenv config-rm xdebug.ini
@@ -32,3 +32,6 @@ install:
 
 script:
 - php vendor/bin/phpunit
+
+after_success:
+- bash <(curl -s https://codecov.io/bash) -F $COVERAGE
