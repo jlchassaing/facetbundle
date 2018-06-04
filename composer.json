@@ -8,7 +8,7 @@
     "facets",
     "tags"
   ],
-  "license": "GPL-2.0",
+  "license": "MIT",
   "authors": [
     {
       "name": "Jean-Luc Chassaing"

@@ -1,3 +1,10 @@
+
+[![Build Status](https://img.shields.io/travis/jlchassaing/facetbundle.svg?style=flat-square)](https://travis-ci.org/jlchassaing/facetbundle)
+[![Code Coverage](https://img.shields.io/codecov/c/github/jlchassaing/facetbundle.svg?style=flat-square)](https://codecov.io/gh/jlchassaing/facetbundle)
+[![Latest stable](https://img.shields.io/packagist/v/jlchassaing/facetbundle.svg?style=flat-square)](https://packagist.org/packages/jlchassaing/facetbundle)
+[![License](https://img.shields.io/packagist/l/jlchassaing/facetbundle.svg?style=flat-square)](https://packagist.org/packages/jlchassaing/facetbundle)
+
+
 # Gie Facet Bundle
 
 This bundle will help you perform and retreive facet searches.
