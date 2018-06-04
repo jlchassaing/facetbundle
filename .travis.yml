@@ -29,8 +29,11 @@ install:
     - composer require "ezsystems/ezpublish-kernel:${EZ_KERNEL_VERSION}" --no-update
     - composer install
 
+notification:
+  email: false
+
 script:
-- php vendor/bin/phpunit -c phpunit.xml --coverage-clover=coverage.xml
+- ./vendor/bin/phpunit --colors -c phpunit.xml --coverage-clover=coverage.xml
 
 after_success:
 - bash <(curl -s https://codecov.io/bash) 
