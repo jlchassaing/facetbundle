@@ -17,7 +17,6 @@ use eZ\Publish\SPI\Persistence\Content\Type\Handler as ContentTypeHandler;
 use eZ\Publish\SPI\Persistence\Content\Location\Handler as LocationHandler;
 use eZ\Publish\SPI\Persistence\Content;
 use eZ\Publish\SPI\Search;
-use Netgen\TagsBundle\Form\Type\FieldType\TagsFieldType;
 
 class CustomTagFieldMapper extends ContentFieldMapper
 {
@@ -58,7 +57,6 @@ class CustomTagFieldMapper extends ContentFieldMapper
 
     public function accept(Content $content)
     {
-        // ContentType with ID 42 is webinar event
         try {
             $contentType = $this->contentTypeHandler->load($content->versionInfo->contentInfo->contentTypeId);
             foreach ( $contentType->fieldDefinitions as $field ) {
