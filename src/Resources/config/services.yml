@@ -20,8 +20,6 @@ services:
     gie.custom_tag_field_mapper:
         class: Gie\FacetBundle\FieldMapper\CustomTagFieldMapper
         arguments:
-            - '@ezpublish.spi.persistence.content_handler'
-            - '@ezpublish.spi.persistence.location_handler'
             - '@ezpublish.spi.persistence.content_type_handler'
         tags:
             - {name: ezpublish.search.solr.field_mapper.content}
