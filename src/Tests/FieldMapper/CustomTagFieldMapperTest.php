@@ -76,8 +76,7 @@ class CustomTagFieldMapperTest extends TestCase
         $this->contentTypeHandler->method('load')
                            ->willReturn($this->contentType);
 
-        $customTagFieldMapper = new CustomTagFieldMapper($this->contentHandler,
-            $this->locationHandler,
+        $customTagFieldMapper = new CustomTagFieldMapper(
             $this->contentTypeHandler);
 
         $this->assertTrue($customTagFieldMapper->accept($this->content));
@@ -91,8 +90,7 @@ class CustomTagFieldMapperTest extends TestCase
     {
         $this->contentTypeHandler->method('load')->willThrowException(new NotFoundException("error", "id"));
 
-        $customTagFieldMapper = new CustomTagFieldMapper($this->contentHandler,
-            $this->locationHandler,
+        $customTagFieldMapper = new CustomTagFieldMapper(
             $this->contentTypeHandler);
 
         $this->assertFalse($customTagFieldMapper->accept($this->content));
