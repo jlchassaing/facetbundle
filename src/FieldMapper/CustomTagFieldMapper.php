@@ -26,6 +26,7 @@ class CustomTagFieldMapper extends ContentFieldMapper
      */
     private $fieldDefinition;
 
+
     /**
      * CustomTagFieldMapper constructor.
      * @param ContentTypeHandler $contentTypeHandler
