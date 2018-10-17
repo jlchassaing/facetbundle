@@ -40,9 +40,13 @@ class CustomTagFieldMapper extends ContentFieldMapper
      */
     private $fieldDefinition;
 
+
     /**
-     * @param \eZ\Publish\SPI\Persistence\Content\Handler $contentHandler
-     * @param \eZ\Publish\SPI\Persistence\Content\Location\Handler $locationHandler
+     * CustomTagFieldMapper constructor.
+     *
+     * @param ContentHandler $contentHandler
+     * @param LocationHandler $locationHandler
+     * @param ContentTypeHandler $contentTypeHandler
      */
     public function __construct(
         ContentHandler $contentHandler,
