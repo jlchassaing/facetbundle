@@ -138,7 +138,7 @@ class FacetSearch
      */
     private function appendHandlerFacetFilters(array $facetFilters = [])
     {
-        if (count($facetFilters > 0))
+        if (count($facetFilters) > 0)
         {
             $this->facetFilters = $facetFilters;
             foreach ( $this->searchHelpers as $helper )
@@ -176,7 +176,7 @@ class FacetSearch
      */
     protected function hasFacetQuery()
     {
-        return  count($this->facetFilters) > 0 ;
+        return  $this->facetFilters !== null && count($this->facetFilters) > 0 ;
     }
 
     /**
