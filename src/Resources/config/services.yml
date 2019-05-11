@@ -1,58 +1,41 @@
 services:
-    gie.search.solr.query.common.facet_builder_visitor.tag:
-        class: Gie\FacetBundle\Content\Query\Common\FacetBuilderVisitor\TagType
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Gie\FacetBundle\Content\Query\Common\FacetBuilderVisitor\TagType:
         tags:
             - {name: ezpublish.search.solr.query.content.facet_builder_visitor}
             - {name: ezpublish.search.solr.query.location.facet_builder_visitor}
 
-    gie.search.solr.query.common.facet_builder_visitor.custom_date:
-        class: Gie\FacetBundle\Content\Query\Common\FacetBuilderVisitor\CustomDateType
+    Gie\FacetBundle\Content\Query\Common\FacetBuilderVisitor\CustomDateType:
         tags:
             - {name: ezpublish.search.solr.query.content.facet_builder_visitor}
             - {name: ezpublish.search.solr.query.location.facet_builder_visitor}
 
-    gie.search.solr.query.common.facet_builder_visitor.solr_file:
-        class: Gie\FacetBundle\Content\Query\Common\FacetBuilderVisitor\SolrFieldType
+    Gie\FacetBundle\Content\Query\Common\FacetBuilderVisitor\SolrFieldType:
         tags:
             - {name: ezpublish.search.solr.query.content.facet_builder_visitor}
             - {name: ezpublish.search.solr.query.location.facet_builder_visitor}
 
-    gie.custom_tag_field_mapper:
-        class: Gie\FacetBundle\FieldMapper\CustomTagFieldMapper
-        arguments:
-            - '@ezpublish.spi.persistence.content_type_handler'
+    Gie\FacetBundle\FieldMapper\CustomTagFieldMapper:
         tags:
             - {name: ezpublish.search.solr.field_mapper.content}
 
-    gie.location.tag_field_mapper:
-        class: Gie\FacetBundle\FieldMapper\LocationCustomTagFieldMapper
-        arguments:
-            - '@ezpublish.spi.persistence.content_handler'
-            - '@ezpublish.spi.persistence.location_handler'
-            - '@ezpublish.spi.persistence.content_type_handler'
+    Gie\FacetBundle\FieldMapper\LocationCustomTagFieldMapper:
         tags:
             - {name: ezpublish.search.solr.field_mapper.location}
 
-    gie.facet_search.content_type.helper:
-        class: Gie\FacetBundle\Content\Search\Helper\ContentTypeFacetSearchHelper
-        arguments:
-            - '@ezpublish.api.service.content_type'
-            - '@Logger'
+    Gie\FacetBundle\Content\Search\Helper\ContentTypeFacetSearchHelper:
         tags:
             - {name: gie.facet_search.helper, alias: 'content_type'}
 
-    gie.facet_search.tag.helper:
-        class: Gie\FacetBundle\Content\Search\Helper\TagFacetSearchHelper
-        arguments:
-            - '@eztags.api.service.tags'
-            - '@Logger'
+    Gie\FacetBundle\Content\Search\Helper\TagFacetSearchHelper:
         tags:
             - {name: gie.facet_search.helper, alias: 'tags'}
 
-    gie.facet_search.custom_date.helper:
-        class: Gie\FacetBundle\Content\Search\Helper\CustomDateFacetSearchHelper
-        arguments:
-            - '@Logger'
+    Gie\FacetBundle\Content\Search\Helper\CustomDateFacetSearchHelper:
         tags:
             - {name: gie.facet_search.helper, alias: 'custom_date'}
 

@@ -58,10 +58,10 @@ class FacetSearchTest extends TestCase
     public function facetBuilderProvider()
     {
         return [
-            ["", []],
-            ['test:truc', ['test' => ['truc']]],
-            ['test:truc;test2:truc2', ['test' => ['truc'], 'test2' => ['truc2']]],
-            ['test:truc;test2:truc2;test:truc3', ['test' => ['truc','truc3'], 'test2' => ['truc2']]],
+            [[], []],
+            [['test:truc'], ['test' => ['truc']]],
+            [['test:truc','test2:truc2'], ['test' => ['truc'], 'test2' => ['truc2']]],
+            [['test:truc','test2:truc2','test:truc3'], ['test' => ['truc','truc3'], 'test2' => ['truc2']]],
         ];
     }
 
@@ -70,6 +70,7 @@ class FacetSearchTest extends TestCase
      */
     public function testBuildFacetFilter($query, $expected)
     {
+        var_dump($this->facetSearch->buildFacetFilter($query));
         $this->assertEquals($expected, $this->facetSearch->buildFacetFilter($query));
 
     }

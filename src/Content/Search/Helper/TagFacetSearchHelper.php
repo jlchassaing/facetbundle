@@ -9,12 +9,13 @@
 namespace Gie\FacetBundle\Content\Search\Helper;
 
 
+use Doctrine\DBAL\Types\TextType;
 use eZ\Publish\API\Repository\Values\Content\Query;
 use eZ\Publish\API\Repository\Values\Content\Search\Facet;
 use Gie\FacetBundle\Content\Query\Criterion\Tag;
 use Gie\FacetBundle\Content\Query\FacetBuilder\TagFacetBuilder;
 use Gie\FacetBundle\Content\Values\Search\Facet\TagFacet;
-use Netgen\TagsBundle\API\Repository\TagsService;
+use \Netgen\TagsBundle\Core\Repository\TagsService;
 use Psr\Log\LoggerInterface;
 
 class TagFacetSearchHelper extends FacetSearchHelper

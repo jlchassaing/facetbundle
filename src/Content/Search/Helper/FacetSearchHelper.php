@@ -60,7 +60,7 @@ abstract class FacetSearchHelper implements FacetSearchHelperInterface
         $this->selectedEntries = [];
     }
 
-    function formatFacet( Facet $facet, $facetFilterString, Facet $facetAfterFilter )
+    function formatFacet( Facet $facet, Facet $facetAfterFilter )
     {
         $name = $this->getFacetIdentifier();
 
@@ -69,23 +69,11 @@ abstract class FacetSearchHelper implements FacetSearchHelperInterface
         foreach ( $facet->entries as $id => $count )
         {
             $formatedValue = $this->getFormatedValueFromFacetId($id);
-            if (($selected = in_array($formatedValue['identifier'], $this->selectedEntries)) == true){
-
-                $temp = $name.":".$formatedValue['identifier'];
-                $queryString = str_replace($temp, "", $facetFilterString);
-                $queryString = trim($queryString, ";");
-
-            }
-            else{
-
-                $queryString = ($facetFilterString === "") ? "" : ";";
-                $queryString = $facetFilterString.$queryString.$name.":".$formatedValue['identifier'];
-            }
+            $selected = in_array($formatedValue['identifier'], $this->selectedEntries);
 
             $conf[]  = ['name' => $formatedValue['label'],
                         'key'  => $name."_".$id,
                         'count' => isset($facetAfterFilter->entries[$id]) ?$facetAfterFilter->entries[$id] : $facet->entries[$id],
-                        'querystring' => $queryString,
                         'facetkey' => $name.":".$formatedValue['identifier'],
                         'selected' => $selected,
                         ];

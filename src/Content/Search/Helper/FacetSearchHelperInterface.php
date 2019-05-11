@@ -73,11 +73,10 @@ interface FacetSearchHelperInterface
 
     /**
      * @param Facet $facet
-     * @param string $facetFilterString facet query string
      *
      * @return array
      */
-    function formatFacet(Facet $facet, $facetFilterString, Facet $facetsAfterFilter);
+    function formatFacet(Facet $facet, Facet $facetsAfterFilter);
 
     /**
      * get the selected entries for this given facet

@@ -23,7 +23,7 @@ class FacetLoader
 
     public function addFacetHelper(FacetSearchHelperInterface $helper, $alias)
     {
-        $this->facetHelpers[$alias] = $helper;
+        $this->facetHelpers[md5(get_class($helper))] = $helper;
     }
 
     /**
@@ -33,9 +33,10 @@ class FacetLoader
      */
     public function getFacetHelper($alias)
     {
-        if (array_key_exists($alias, $this->facetHelpers))
+        $key = md5($alias);
+        if (array_key_exists($key, $this->facetHelpers))
         {
-            return clone $this->facetHelpers[$alias];
+            return clone $this->facetHelpers[$key];
         }
     }
 

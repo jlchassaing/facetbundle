@@ -10,7 +10,7 @@ namespace Gie\FacetBundle\FieldMapper;
 
 use eZ\Publish\API\Repository\Exceptions\NotFoundException;
 use EzSystems\EzPlatformSolrSearchEngine\FieldMapper\ContentFieldMapper;
-use eZ\Publish\SPI\Persistence\Content\Type\Handler as ContentTypeHandler;
+use eZ\Publish\Core\Persistence\Cache\ContentTypeHandler;
 use eZ\Publish\SPI\Persistence\Content;
 use eZ\Publish\SPI\Search;
 

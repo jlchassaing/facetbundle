@@ -32,7 +32,7 @@ class FacetSearch
     /**
      * @var string
      */
-    private $facetFilterString;
+    private $facetQueryFilters;
 
     /**
      * @var array
@@ -62,7 +62,7 @@ class FacetSearch
     {
         if ($facetsSettings)
         return $this->registerFacetHelpers($facetsSettings)
-                    ->extractFacetFilterString($request);
+                    ->extractfacetQueryFilters($request);
     }
 
     /**
@@ -80,10 +80,10 @@ class FacetSearch
         {
             if ($facetConfig instanceof FacetConfig)
             {
-                $facetHelper = $this->facetLoader->getFacetHelper($facetConfig->getAlias());
+                $facetHelper = $this->facetLoader->getFacetHelper($facetConfig->getType());
                 if ($facetHelper instanceof FacetSearchHelperInterface)
                 {
-                    $this->searchHelpers[] = $facetHelper->setQueryFacetBuilderParams($facetConfig->getTitle(), $facetConfig->getParams());
+                    $this->searchHelpers[$facetHelper->getFacetIdentifier()] = $facetHelper->setQueryFacetBuilderParams($facetConfig->getTitle(), $facetConfig->getParams());
                 }
             }
             else throw new \InvalidArgumentException("FacetConfigs must be an array of ". FacetConfig::class);
@@ -95,26 +95,28 @@ class FacetSearch
     }
 
     /**
-     * @param string $facetFilterString
+     * @param string $facetQueryFilters
      * extract facet setting  passed threw the query string
      *
      * format facet queryString :
      *
-     * facet=nom_facet:valeur;nom_facet:valeur2;nom_face2:valeur3
+     * facet[]=nom_facet:valeur&facet[]=nom_facet:valeur2&facet[]=nom_face2:valeur3
      * @return array
      */
-    public function buildFacetFilter($facetFilterString = "")
+    public function buildFacetFilter($facetQueryFilters = [])
     {
         $seachFilterRegex = '/(\w+):([^;]+)/i';
         $facetFilters = [];
-
-        if (preg_match_all($seachFilterRegex,$facetFilterString,$filters))
-        {
-            foreach ($filters[1] as $key=>$filterKey)
+        foreach ($facetQueryFilters as $facetQueryFilter) {
+            if (preg_match_all($seachFilterRegex,$facetQueryFilter,$filters))
             {
-                $facetFilters[$filterKey][] = $filters[2][$key];
+                foreach ($filters[1] as $key=>$filterKey)
+                {
+                    $facetFilters[$filterKey][] = $filters[2][$key];
+                }
             }
         }
+
         return $facetFilters;
     }
 
@@ -125,9 +127,9 @@ class FacetSearch
      *
      * @return FacetSearch
      */
-    public function extractFacetFilterString(Request $request = null)
+    public function extractfacetQueryFilters(Request $request = null)
     {
-        $facetFilters = $this->buildFacetFilter($this->getFacetFilterStringFromRequest($request));
+        $facetFilters = $this->buildFacetFilter($this->getfacetQueryFiltersFromRequest($request));
         return $this->appendHandlerFacetFilters($facetFilters);
 
     }
@@ -161,13 +163,13 @@ class FacetSearch
      *
      * @return mixed|string
      */
-    protected function getFacetFilterStringFromRequest(Request $request = null)
+    protected function getfacetQueryFiltersFromRequest(Request $request = null)
     {
-        if ($this->facetFilterString === null && $request !== null)
+        if ($this->facetQueryFilters === null && $request !== null)
         {
-            $this->facetFilterString =  $request->get(self::FACET_QUERYSTRING_IDENTIFIER, '');
+            $this->facetQueryFilters = $request->get(self::FACET_QUERYSTRING_IDENTIFIER, '');
         }
-        return $this->facetFilterString;
+        return $this->facetQueryFilters;
     }
 
     /**
@@ -318,12 +320,15 @@ class FacetSearch
 
         foreach ( $this->defaultFacets as $id=> $facet )
         {
-            foreach ( $this->searchHelpers as $helper )
+            foreach ( $this->searchHelpers as $key=>$helper )
             {
 
                 if ( $helper->canVisit( $facet ) )
                 {
-                    $facets[ $helper->getName() ] = $helper->formatFacet( $facet, $this->facetFilterString, $facetsToDisplayAfterFilter[$id] );
+                    $facets[ $key ] = [
+                        'name' => $helper->getName(),
+                        'data' => $helper->formatFacet( $facet, $facetsToDisplayAfterFilter[$id] ),
+                    ];
                 }
             }
         }

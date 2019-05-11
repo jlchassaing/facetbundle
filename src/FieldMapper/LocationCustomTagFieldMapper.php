@@ -12,9 +12,10 @@ namespace Gie\FacetBundle\FieldMapper;
 
 use eZ\Publish\API\Repository\Exceptions\NotFoundException;
 use EzSystems\EzPlatformSolrSearchEngine\FieldMapper\ContentFieldMapper;
-use eZ\Publish\SPI\Persistence\Content\Handler as ContentHandler;
-use eZ\Publish\SPI\Persistence\Content\Type\Handler as ContentTypeHandler;
-use eZ\Publish\SPI\Persistence\Content\Location\Handler as LocationHandler;
+use eZ\Publish\Core\Persistence\Cache\ContentHandler;
+
+use eZ\Publish\Core\Persistence\Cache\ContentTypeHandler;
+use eZ\Publish\Core\Persistence\Cache\LocationHandler;
 use eZ\Publish\SPI\Persistence\Content;
 use eZ\Publish\SPI\Search;
 use EzSystems\EzPlatformSolrSearchEngine\FieldMapper\LocationFieldMapper;
@@ -46,9 +47,12 @@ class LocationCustomTagFieldMapper extends LocationFieldMapper
      */
     private $content;
 
+
     /**
-     * @param \eZ\Publish\SPI\Persistence\Content\Handler $contentHandler
-     * @param \eZ\Publish\SPI\Persistence\Content\Location\Handler $locationHandler
+     * LocationCustomTagFieldMapper constructor.
+     * @param ContentHandler $contentHandler
+     * @param LocationHandler $locationHandler
+     * @param ContentTypeHandler $contentTypeHandler
      */
     public function __construct(
         ContentHandler $contentHandler,

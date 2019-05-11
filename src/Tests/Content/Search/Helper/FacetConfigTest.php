@@ -23,8 +23,9 @@ class FacetConfigTest extends TestCase
 
     public function testGetAlias()
     {
-        $facetConfig = new FacetConfig("alias", "title", []);
+        $facetConfig = new FacetConfig( "title", "test", []);
 
-        $this->assertInternalType('string', $facetConfig->getAlias());
+        $this->assertInternalType('string', $facetConfig->getTitle());
+        $this->assertInternalType('string', $facetConfig->getType());
     }
 }

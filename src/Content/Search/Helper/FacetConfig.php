@@ -12,54 +12,42 @@ namespace Gie\FacetBundle\Content\Search\Helper;
 class FacetConfig implements FacetConfigInterface
 {
 
-    protected $alias;
-
     protected $title;
+
+    protected $type;
 
     protected $params;
 
     /**
      * FacetConfig constructor.
-     * @param $alias
+
      * @param $title
      * @param array $params
      */
-    public function __construct($alias, $title, $params = [])
+    public function __construct( $title, $type, $params = [])
     {
-        if (is_null($alias)) throw new \InvalidArgumentException("an alias must be set");
-        if (is_array($alias)) throw new \InvalidArgumentException("alias must be a string");
-        $this->alias = $alias;
+
+        if (is_null($type)) throw new \InvalidArgumentException("a type must be set");
+        if (!is_string($type)) throw new \InvalidArgumentException("type must be a string");
+     
         $this->title = $title;
+        $this->type = $type;
         $this->params = $params;
 
     }
 
-    /**
-     * @return mixed
-     */
-    public function getAlias()
-    {
-        return $this->alias;
-    }
+ 
 
     /**
-     * @param mixed $alias
+     * @return string
      */
-    public function setAlias($alias)
-    {
-        $this->alias = $alias;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
 
     /**
-     * @param mixed $title
+     * @param string $title
      */
     public function setTitle($title)
     {
@@ -67,9 +55,27 @@ class FacetConfig implements FacetConfigInterface
     }
 
     /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setType($type): void
+    {
+        $this->type = $type;
+    }
+
+    
+
+    /**
      * @return array
      */
-    public function getParams()
+    public function getParams(): array
     {
         return $this->params;
     }
