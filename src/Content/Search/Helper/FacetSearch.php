@@ -169,7 +169,8 @@ class FacetSearch
         {
             $this->facetQueryFilters = $request->get(self::FACET_QUERYSTRING_IDENTIFIER, '');
         }
-        return $this->facetQueryFilters;
+
+        return is_array($this->facetQueryFilters) ? $this->facetQueryFilters : [];
     }
 
     /**
