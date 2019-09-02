@@ -18,14 +18,5 @@ use Gie\FacetBundle\Pagination\Pagerfanta\ContentSearchHitAdapter as DefaultCont
  */
 class ContentSearchAdapter extends DefaultContentSearchAdapter
 {
-
-    /**
-     * @return mixed
-     */
-    public function getFacets()
-    {
-        return $this->facets;
-
-    }
-
+    
 }

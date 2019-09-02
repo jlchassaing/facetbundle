@@ -83,15 +83,25 @@ class FacetSearch
                 $facetHelper = $this->facetLoader->getFacetHelper($facetConfig->getType());
                 if ($facetHelper instanceof FacetSearchHelperInterface)
                 {
-                    $this->searchHelpers[$facetHelper->getFacetIdentifier()] = $facetHelper->setQueryFacetBuilderParams($facetConfig->getTitle(), $facetConfig->getParams());
+                    $this->registerFacetHelper(
+                        $facetHelper->setQueryFacetBuilderParams(
+                            $facetConfig->getTitle(), $facetConfig->getParams()
+                        )
+                    );
                 }
             }
             else throw new \InvalidArgumentException("FacetConfigs must be an array of ". FacetConfig::class);
-
-
         }
 
         return $this;
+    }
+
+    /**
+     * @param FacetSearchHelperInterface $facetSearchHelper
+     */
+    function registerFacetHelper(FacetSearchHelperInterface $facetSearchHelper)
+    {
+        $this->searchHelpers[$facetSearchHelper->getFacetIdentifier()] = $facetSearchHelper;
     }
 
     /**
@@ -296,8 +306,6 @@ class FacetSearch
      */
     public function getFacetsFromPager(Pagerfanta $pager)
     {
-        $pager->getNbResults();
-
         return $this->buildFacets($this->getContentSearchAdapter($pager)->getFacets());
     }
 
@@ -318,12 +326,10 @@ class FacetSearch
     private function buildFacets(array $facetsToDisplayAfterFilter)
     {
         $facets = [];
-
         foreach ( $this->defaultFacets as $id=> $facet )
         {
             foreach ( $this->searchHelpers as $key=>$helper )
             {
-
                 if ( $helper->canVisit( $facet ) )
                 {
                     $facets[ $key ] = [

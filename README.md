@@ -33,13 +33,15 @@ The init method will also look at the queryString and init the selected facets. 
 ```php
 
 $facetSearchHelper = $this->container->get('gie.facet.search.helper')
-                                     ->init(new FacetConfig('content_type',
-                                                            'Content types',  [
+                                     ->init(new FacetConfig('Content types', 
+                                                             ContentTypeFacetSearchHelper::class,
+                                                             [
                                                             'minCount' => 2,
                                                             'limit' => 5,
                                                             ]),
-                                            new FacetConfig('tags',
-                                                            'Key Words', [
+                                            new FacetConfig('Key Words',
+                                                             TagFacetSearchHelper::class,
+                                                             [
                                                             'minCount' => 1,
                                                             'limit' => 5,
                                                             ]),

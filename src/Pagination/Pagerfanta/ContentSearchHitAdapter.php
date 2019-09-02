@@ -56,24 +56,24 @@ class ContentSearchHitAdapter extends DefaultContentSearchHitAdapter
 
         $countQuery = clone $this->query;
         $countQuery->limit = 0;
-
-        $request = $this->searchService->findContent($countQuery);
-
-        $this->setFacets($request);
-
-        return $this->nbResults = $request->totalCount;
+        
+        return $this->nbResults =  $this->searchService->findContent($countQuery)->totalCount;
     }
 
     /**
      * @param $request
      * set the facets
      */
-    protected function setFacets(SearchResult $request)
+    public function getFacets()
     {
-        if ($this->facets === null)
-        {
-            $this->facets = $request->facets;
+        if (isset($this->facets)) {
+            return $this->facets;
         }
+
+        $facetQuery = clone $this->query;
+        $facetQuery->limit = 0;
+
+        return $this->facets = $this->searchService->findContent($facetQuery)->facets;
     }
 
     /**
@@ -98,7 +98,10 @@ class ContentSearchHitAdapter extends DefaultContentSearchHitAdapter
             $this->nbResults = $searchResult->totalCount;
         }
 
-        $this->setFacets($searchResult);
+        if (!isset($this->facets) && isset($searchResult->facets)) {
+            $this->facets = $searchResult->facets;
+        }
+
         return $searchResult->searchHits;
     }
 
