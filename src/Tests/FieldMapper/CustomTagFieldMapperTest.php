@@ -10,12 +10,18 @@ namespace Gie\FacetBundle\Tests\FieldMapper;
 use eZ\Publish\Core\Base\Exceptions\NotFoundException;
 use eZ\Publish\SPI\Persistence\Content\Handler as ContentHandler;
 use eZ\Publish\SPI\Persistence\Content\Location\Handler as LocationHandler;
+use eZ\Publish\SPI\Persistence\Content\Type\CreateStruct;
+use eZ\Publish\SPI\Persistence\Content\Type\FieldDefinition;
+use eZ\Publish\SPI\Persistence\Content\Type\Group\CreateStruct as GroupCreateStruct;
+use eZ\Publish\SPI\Persistence\Content\Type\Group\UpdateStruct as GroupUpdateStruct;
 use eZ\Publish\SPI\Persistence\Content\Type\Handler as ContentTypeHandler;
 use eZ\Publish\SPI\Persistence\Content;
 use eZ\Publish\SPI\Persistence\Content\Type as ContentType;
+use eZ\Publish\SPI\Persistence\Content\Type\UpdateStruct;
 use Gie\FacetBundle\FieldMapper\CustomTagFieldMapper;
 use eZ\Publish\SPI\Search;
 use PHPUnit\Framework\TestCase;
+
 
 class CustomTagFieldMapperTest extends TestCase
 {
@@ -42,7 +48,12 @@ class CustomTagFieldMapperTest extends TestCase
     {
         $this->contentHandler = $this->createMock(ContentHandler::class);
         $this->locationHandler = $this->createMock(LocationHandler::class);
-        $this->contentTypeHandler = $this->createMock(ContentTypeHandler::class);
+        $className = \eZ\Publish\Core\Persistence\Cache\ContentTypeHandler::class;
+        $this->contentTypeHandler = $this->getMockBuilder($className)
+            ->disableOriginalConstructor()
+            ->setMethods(get_class_methods($className))
+            ->getMock();
+
 
         $this->contentType = new ContentType();
         $this->fieldDefinition = new ContentType\FieldDefinition();
@@ -76,8 +87,7 @@ class CustomTagFieldMapperTest extends TestCase
         $this->contentTypeHandler->method('load')
                            ->willReturn($this->contentType);
 
-        $customTagFieldMapper = new CustomTagFieldMapper(
-            $this->contentTypeHandler);
+        $customTagFieldMapper = new CustomTagFieldMapper($this->contentTypeHandler);
 
         $this->assertTrue($customTagFieldMapper->accept($this->content));
 
