@@ -8,7 +8,7 @@
 
 namespace Gie\FacetBundle\Pagination\Pagerfanta;
 
-use Gie\FacetBundle\Pagination\Pagerfanta\ContentSearchHitAdapter as DefaultContentSearchAdapter;
+use Gie\FacetBundle\Pagination\Pagerfanta\LocationSearchHitAdapter as DefaultLocationSearchAdapter;
 
 /**
  * Class ContentSearchAdapter
@@ -16,7 +16,7 @@ use Gie\FacetBundle\Pagination\Pagerfanta\ContentSearchHitAdapter as DefaultCont
  *
  * Extends the defautl ContentSearchAdapter to be able to access facet result
  */
-class ContentSearchAdapter extends DefaultContentSearchAdapter
+class LocationSearchAdapter extends DefaultLocationSearchAdapter
 {
     /**
      * Returns a slice of the results, as SearchHit objects.
