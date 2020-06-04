@@ -105,4 +105,12 @@ class ContentSearchHitAdapter extends DefaultContentSearchHitAdapter
         return $searchResult->searchHits;
     }
 
+    /**
+     * @return \eZ\Publish\API\Repository\Values\Content\Query
+     */
+    public function getQuery()
+    {
+        return $this->query;
+    }
+
 }

@@ -36,9 +36,9 @@ class CustomDateFacetSearchHelper extends FacetSearchHelper
      */
     function getFormatedValueFromFacetId( $date )
     {
-        return ['identifier' => $date,
-                'label' => $this->formatDate($date)];
-
+        return ['identifier' => urlencode('['.$this->params['start']. ' TO '. $this->params['end'].']') ,
+                'label' => $this->getName(),
+            ];
     }
 
     /**
@@ -51,6 +51,28 @@ class CustomDateFacetSearchHelper extends FacetSearchHelper
     function formatDate($date)
     {
         return $date;
+    }
+
+    /**
+     * Map value to a proper Solr date representation.
+     *
+     * @param mixed $value
+     *
+     * @return string
+     */
+    protected function getSolrTime($value)
+    {
+        if (is_numeric($value)) {
+            $date = new \DateTime("@{$value}");
+        } else {
+            try {
+                $date = new \DateTime($value);
+            } catch (Exception $e) {
+                throw new \InvalidArgumentException('Invalid date provided: ' . $value);
+            }
+        }
+
+        return $date->format('Y-m-d\\TH:i:s\\Z');
     }
 
     /**
@@ -77,7 +99,8 @@ class CustomDateFacetSearchHelper extends FacetSearchHelper
 
     function getFacetFilter()
     {
-        return new CustomDate($this->selectedEntries);
+
+        return new CustomDate($this->params['field'], $this->selectedEntries);
     }
 
 
@@ -88,6 +111,30 @@ class CustomDateFacetSearchHelper extends FacetSearchHelper
             return true;
         }
         return false;
+
+    }
+
+    function formatFacet( Facet $facet, Facet $facetAfterFilter )
+    {
+        $name = $this->getFacetIdentifier();
+
+        $conf = [];
+
+        foreach ( $facet->entries as $id => $count )
+        {
+
+            $formatedValue = $this->getFormatedValueFromFacetId($id);
+            $selected = in_array(urldecode($formatedValue['identifier']), $this->selectedEntries);
+
+            $conf[]  = ['name' => $formatedValue['label'],
+                'key'  => $name."_".$id,
+                'count' => isset($facetAfterFilter->entries[$id]) ?$facetAfterFilter->entries[$id] : $facet->entries[$id],
+                'facetkey' => $name.":".$formatedValue['identifier'],
+                'selected' => $selected,
+            ];
+
+        }
+        return $conf;
 
     }
 

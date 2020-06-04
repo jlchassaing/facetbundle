@@ -52,6 +52,7 @@ services:
 
     gie.facet.search.helper:
         class: Gie\FacetBundle\Content\Search\Helper\FacetSearch
+        public: true
         arguments:
             -  '@gie.facet.facet_loader'
             -  '@ezpublish.api.service.inner_search'
@@ -66,6 +67,12 @@ services:
 
     gie.search.solr.query.common.criterion_visitor.sorl_field_in:
         class: Gie\FacetBundle\Content\Query\Content\CriterionVisitor\SorlFieldIn
+        tags:
+            - {name: ezpublish.search.solr.query.content.criterion_visitor}
+            - {name: ezpublish.search.solr.query.location.criterion_visitor}
+
+    gie.search.solr.query.common.criterion_visitor.custom_date_in:
+        class: Gie\FacetBundle\Content\Query\Content\CriterionVisitor\CustomDateIn
         tags:
             - {name: ezpublish.search.solr.query.content.criterion_visitor}
             - {name: ezpublish.search.solr.query.location.criterion_visitor}

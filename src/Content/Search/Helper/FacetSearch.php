@@ -306,7 +306,8 @@ class FacetSearch
      */
     public function getFacetsFromPager(Pagerfanta $pager)
     {
-        return $this->buildFacets($this->getContentSearchAdapter($pager)->getFacets());
+
+        return $this->buildFacets($pager->getAdapter()->getQuery()->facetBuilders, $this->getContentSearchAdapter($pager)->getFacets());
     }
 
     /**
@@ -323,9 +324,14 @@ class FacetSearch
      * @param array $facetsToDisplayAfterFilter
      * @return array
      */
-    private function buildFacets(array $facetsToDisplayAfterFilter)
+    private function buildFacets(array $facetBuilders, array $facetsToDisplayAfterFilter)
     {
         $facets = [];
+
+        $formated = array_reduce($facetBuilders,function ($acc, $item){
+            return $acc + [$item->name => $item];
+        }, []);
+
         foreach ( $this->defaultFacets as $id=> $facet )
         {
             foreach ( $this->searchHelpers as $key=>$helper )

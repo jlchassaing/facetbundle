@@ -31,9 +31,9 @@ class CustomDate extends Criterion implements CriterionInterface
      *
      * @throws \InvalidArgumentException if the value type doesn't match the operator
      */
-    public function __construct($value)
+    public function __construct($target, $value)
     {
-        parent::__construct(null, null, $value);
+        parent::__construct($target, null, $value);
     }
 
     public function getSpecifications()
@@ -54,6 +54,6 @@ class CustomDate extends Criterion implements CriterionInterface
 
     public static function createFromQueryBuilder($target, $operator, $value)
     {
-        return new self($value);
+        return new self($target,$value);
     }
 }
