@@ -105,4 +105,12 @@ class LocationSearchHitAdapter extends DefaultLocationSearchHitAdapter
         return $searchResult->searchHits;
     }
 
+    /**
+     * @return \eZ\Publish\API\Repository\Values\Content\Query
+     */
+    public function getQuery()
+    {
+        return $this->query;
+    }
+
 }
