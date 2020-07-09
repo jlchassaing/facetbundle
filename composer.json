@@ -17,7 +17,7 @@
   "require": {
     "php": ">=7.1",
     "ezsystems/ezpublish-kernel": "^7.5.2",
-    "ezsystems/ezplatform-solr-search-engine": "^1.6",
+    "ezsystems/ezplatform-solr-search-engine": "^1.6|~2.0",
     "netgen/tagsbundle": "^3.3"
   },
   "autoload": {
