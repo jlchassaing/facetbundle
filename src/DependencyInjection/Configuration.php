@@ -17,7 +17,7 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder(gc_gie_tag_facet);
+        $treeBuilder = new TreeBuilder('gc_gie_tag_facet');
         $rootNode = $treeBuilder->getRootNode();
 
         // Here you should define the parameters that are allowed to
