@@ -15,15 +15,13 @@ use eZ\Publish\API\Repository\Values\Content\Search\Facet;
 use Gie\FacetBundle\Content\Query\Criterion\Tag;
 use Gie\FacetBundle\Content\Query\FacetBuilder\TagFacetBuilder;
 use Gie\FacetBundle\Content\Values\Search\Facet\TagFacet;
-use \Netgen\TagsBundle\Core\Repository\TagsService;
+use Netgen\TagsBundle\API\Repository\TagsService;
 use Psr\Log\LoggerInterface;
 
 class TagFacetSearchHelper extends FacetSearchHelper
 {
 
-    /**
-     * @var TagsService
-     */
+    /** @var \Netgen\TagsBundle\API\Repository\TagsService  */
     private $tagsService;
 
     /** @var LoggerInterface */

@@ -8,6 +8,7 @@
 
 namespace Gie\FacetBundle\FieldMapper;
 
+use eZ\Publish\API\Repository\ContentTypeService;
 use eZ\Publish\API\Repository\Exceptions\NotFoundException;
 use EzSystems\EzPlatformSolrSearchEngine\FieldMapper\ContentFieldMapper;
 use eZ\Publish\Core\Persistence\Cache\ContentTypeHandler;
@@ -16,9 +17,7 @@ use eZ\Publish\SPI\Search;
 
 class CustomTagFieldMapper extends ContentFieldMapper
 {
-    /**
-     * @var ContentTypeHandler
-     */
+    /** @var \eZ\Publish\API\Repository\ContentTypeService  */
     protected $contentTypeHandler;
 
     /**
@@ -29,11 +28,11 @@ class CustomTagFieldMapper extends ContentFieldMapper
 
     /**
      * CustomTagFieldMapper constructor.
-     * @param ContentTypeHandler $contentTypeHandler
+     *
+     * @param \eZ\Publish\API\Repository\ContentTypeService $contentTypeHandler
      */
-
     public function __construct(
-        ContentTypeHandler $contentTypeHandler
+        ContentTypeService $contentTypeHandler
     ) {
         $this->contentTypeHandler = $contentTypeHandler;
     }

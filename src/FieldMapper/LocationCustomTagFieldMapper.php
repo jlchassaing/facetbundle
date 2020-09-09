@@ -10,7 +10,10 @@ namespace Gie\FacetBundle\FieldMapper;
 
 
 
+use eZ\Publish\API\Repository\ContentService;
+use eZ\Publish\API\Repository\ContentTypeService;
 use eZ\Publish\API\Repository\Exceptions\NotFoundException;
+use eZ\Publish\API\Repository\LocationService;
 use EzSystems\EzPlatformSolrSearchEngine\FieldMapper\ContentFieldMapper;
 use eZ\Publish\Core\Persistence\Cache\ContentHandler;
 
@@ -22,19 +25,13 @@ use EzSystems\EzPlatformSolrSearchEngine\FieldMapper\LocationFieldMapper;
 
 class LocationCustomTagFieldMapper extends LocationFieldMapper
 {
-    /**
-     * @var \eZ\Publish\SPI\Persistence\Content\Type\Handler
-     */
+    /** @var \eZ\Publish\API\Repository\ContentService  */
     protected $contentHandler;
 
-    /**
-     * @var \eZ\Publish\SPI\Persistence\Content\Location\Handler
-     */
+    /** @var \eZ\Publish\API\Repository\LocationService  */
     protected $locationHandler;
 
-    /**
-     * @var ContentTypeHandler
-     */
+    /** @var \eZ\Publish\API\Repository\ContentTypeService  */
     protected $contentTypeHandler;
 
     /**
@@ -50,14 +47,15 @@ class LocationCustomTagFieldMapper extends LocationFieldMapper
 
     /**
      * LocationCustomTagFieldMapper constructor.
-     * @param ContentHandler $contentHandler
-     * @param LocationHandler $locationHandler
-     * @param ContentTypeHandler $contentTypeHandler
+     *
+     * @param \eZ\Publish\API\Repository\ContentService $contentHandler
+     * @param \eZ\Publish\API\Repository\LocationService $locationHandler
+     * @param \eZ\Publish\API\Repository\ContentTypeService $contentTypeHandler
      */
     public function __construct(
-        ContentHandler $contentHandler,
-        LocationHandler $locationHandler,
-        ContentTypeHandler $contentTypeHandler
+        ContentService $contentHandler,
+        LocationService $locationHandler,
+        ContentTypeService $contentTypeHandler
 
     ) {
         $this->contentHandler = $contentHandler;
