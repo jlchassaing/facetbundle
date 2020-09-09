@@ -49,8 +49,10 @@ services:
         tags:
             - {name: gie.facet_search.helper, alias: 'solr_field'}
 
+    Gie\FacetBundle\Content\Search\Helper\FacetLoader: ~
+
     gie.facet.facet_loader:
-        class: Gie\FacetBundle\Content\Search\Helper\FacetLoader
+        alias: Gie\FacetBundle\Content\Search\Helper\FacetLoader
 
     Gie\FacetBundle\Content\Search\Helper\FacetSearch: ~
 
