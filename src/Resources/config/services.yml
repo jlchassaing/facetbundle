@@ -32,6 +32,8 @@ services:
             - {name: gie.facet_search.helper, alias: 'content_type'}
 
     Gie\FacetBundle\Content\Search\Helper\TagFacetSearchHelper:
+        arguments:
+            $tagsService: '@eztags.api.service.tags.inner'
         tags:
             - {name: gie.facet_search.helper, alias: 'tags'}
 
@@ -50,12 +52,7 @@ services:
     gie.facet.facet_loader:
         class: Gie\FacetBundle\Content\Search\Helper\FacetLoader
 
-    gie.facet.search.helper:
-        class: Gie\FacetBundle\Content\Search\Helper\FacetSearch
-        public: true
-        arguments:
-            -  '@gie.facet.facet_loader'
-            -  '@ezpublish.api.service.inner_search'
+    Gie\FacetBundle\Content\Search\Helper\FacetSearch: ~
 
     gie.search.solr.query.common.criterion_visitor.tag_in:
         class: Gie\FacetBundle\Content\Query\Content\CriterionVisitor\TagIn
