@@ -29,8 +29,8 @@
     "phpunit/phpunit": "^6.5"
   },
   "extra": {
-        "branch-alias": {
-            "dev-master": "0.7.x-dev"
-        }
+    "branch-alias": {
+      "dev-ez2.5": "1.x-dev"
     }
+  }
 }
