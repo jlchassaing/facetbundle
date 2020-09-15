@@ -32,5 +32,8 @@
     "branch-alias": {
       "dev-ez2.5": "1.x-dev"
     }
-  }
+  },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+
 }
