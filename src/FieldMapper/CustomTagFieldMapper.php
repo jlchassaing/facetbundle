@@ -40,9 +40,9 @@ class CustomTagFieldMapper extends ContentFieldMapper
     public function accept(Content $content)
     {
         try {
-            $contentType = $this->contentTypeHandler->load($content->versionInfo->contentInfo->contentTypeId);
+            $contentType = $this->contentTypeHandler->loadContentType($content->versionInfo->contentInfo->contentTypeId);
             foreach ( $contentType->fieldDefinitions as $field ) {
-                if ( $field->fieldType == "eztags") {
+                if ( $field->fieldTypeIdentifier == "eztags") {
                     $this->fieldDefinition = $field;
                     
                     return true;

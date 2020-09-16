@@ -70,10 +70,11 @@ class LocationCustomTagFieldMapper extends LocationFieldMapper
 
             $contentInfo = $this->contentHandler->loadContentInfo($location->contentId);
 
-            $this->content = $this->contentHandler->load($location->contentId,$contentInfo->currentVersionNo);
-            $contentType = $this->contentTypeHandler->load($contentInfo->contentTypeId);
+            $this->content = $this->contentHandler->loadContentByContentInfo($contentInfo);
+            $contentType = $this->contentTypeHandler->loadContentType($contentInfo->contentTypeId);
+
             foreach ( $contentType->fieldDefinitions as $field ) {
-                if ( $field->fieldType == "eztags") {
+                if ( $field->fieldTypeIdentifier == "eztags") {
                     $this->fieldDefinition = $field;
                     return true;
                 }
