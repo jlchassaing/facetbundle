@@ -60,6 +60,7 @@ class FacetSearch
      */
     public function init($facetsSettings, Request $request = null)
     {
+       ;
         if ($facetsSettings)
         return $this->registerFacetHelpers($facetsSettings)
                     ->extractfacetQueryFilters($request);
@@ -81,6 +82,7 @@ class FacetSearch
             if ($facetConfig instanceof FacetConfig)
             {
                 $facetHelper = $this->facetLoader->getFacetHelper($facetConfig->getType());
+
                 if ($facetHelper instanceof FacetSearchHelperInterface)
                 {
                     $this->registerFacetHelper(

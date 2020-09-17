@@ -45,16 +45,18 @@ services:
         class: Gie\FacetBundle\Content\Search\Helper\SolrFieldSearchHelper
         shared: false
         arguments:
-            - '@Logger'
+            - '@logger'
         tags:
             - {name: gie.facet_search.helper, alias: 'solr_field'}
 
-    Gie\FacetBundle\Content\Search\Helper\FacetLoader: ~
-
     gie.facet.facet_loader:
-        alias: Gie\FacetBundle\Content\Search\Helper\FacetLoader
+        public: true
+        class: Gie\FacetBundle\Content\Search\Helper\FacetLoader
 
-    Gie\FacetBundle\Content\Search\Helper\FacetSearch: ~
+
+    Gie\FacetBundle\Content\Search\Helper\FacetSearch:
+        arguments:
+            $facetLoader: '@gie.facet.facet_loader'
 
     gie.search.solr.query.common.criterion_visitor.tag_in:
         class: Gie\FacetBundle\Content\Query\Content\CriterionVisitor\TagIn
