@@ -15,51 +15,42 @@ use eZ\Publish\API\Repository\ContentTypeService;
 use eZ\Publish\API\Repository\Exceptions\NotFoundException;
 use eZ\Publish\API\Repository\LocationService;
 use EzSystems\EzPlatformSolrSearchEngine\FieldMapper\ContentFieldMapper;
-use eZ\Publish\Core\Persistence\Cache\ContentHandler;
 
-use eZ\Publish\Core\Persistence\Cache\ContentTypeHandler;
-use eZ\Publish\Core\Persistence\Cache\LocationHandler;
 use eZ\Publish\SPI\Persistence\Content;
 use eZ\Publish\SPI\Search;
 use EzSystems\EzPlatformSolrSearchEngine\FieldMapper\LocationFieldMapper;
 
+use eZ\Publish\SPI\Persistence\Content\Handler as ContentHandler;
+use eZ\Publish\SPI\Persistence\Content\Type\Handler as ContentTypeHandler;
+
+
+
 class LocationCustomTagFieldMapper extends LocationFieldMapper
 {
-    /** @var \eZ\Publish\API\Repository\ContentService  */
-    protected $contentHandler;
-
-    /** @var \eZ\Publish\API\Repository\LocationService  */
-    protected $locationHandler;
-
-    /** @var \eZ\Publish\API\Repository\ContentTypeService  */
-    protected $contentTypeHandler;
-
     /**
      * @var Content\Type\FieldDefinition
      */
     private $fieldDefinition;
 
-    /**
-     * @var Content
-     */
+    /** @var  */
     private $content;
 
+   /** @var \eZ\Publish\SPI\Persistence\Content\Handler  */
+    private $contentHandler;
+
+    /** @var \eZ\Publish\SPI\Persistence\Content\Type\Handler  */
+    private $contentTypeHandler;
 
     /**
      * LocationCustomTagFieldMapper constructor.
      *
-     * @param \eZ\Publish\API\Repository\ContentService $contentHandler
-     * @param \eZ\Publish\API\Repository\LocationService $locationHandler
-     * @param \eZ\Publish\API\Repository\ContentTypeService $contentTypeHandler
+     * @param \eZ\Publish\SPI\Persistence\Handler $persistenceHandler
      */
     public function __construct(
-        ContentService $contentHandler,
-        LocationService $locationHandler,
-        ContentTypeService $contentTypeHandler
-
+        ContentHandler $contentHandler,
+        ContentTypeHandler $contentTypeHandler
     ) {
         $this->contentHandler = $contentHandler;
-        $this->locationHandler = $locationHandler;
         $this->contentTypeHandler = $contentTypeHandler;
     }
 
@@ -67,14 +58,12 @@ class LocationCustomTagFieldMapper extends LocationFieldMapper
     {
         // ContentType with ID 42 is webinar event
         try {
-
             $contentInfo = $this->contentHandler->loadContentInfo($location->contentId);
-
-            $this->content = $this->contentHandler->loadContentByContentInfo($contentInfo);
-            $contentType = $this->contentTypeHandler->loadContentType($contentInfo->contentTypeId);
+            $this->content = $this->contentHandler->load($contentInfo->id);
+            $contentType = $this->contentTypeHandler->load($contentInfo->contentTypeId);
 
             foreach ( $contentType->fieldDefinitions as $field ) {
-                if ( $field->fieldTypeIdentifier == "eztags") {
+                if ( $field->fieldType == "eztags") {
                     $this->fieldDefinition = $field;
                     return true;
                 }

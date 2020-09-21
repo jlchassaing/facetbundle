@@ -24,8 +24,13 @@ services:
             - {name: ezpublish.search.solr.field_mapper.content}
 
     Gie\FacetBundle\FieldMapper\LocationCustomTagFieldMapper:
+        arguments:
+            $contentHandler: "@ezpublish.spi.persistence.content_handler"
+            $contentTypeHandler: "@ezpublish.spi.persistence.content_type_handler"
         tags:
             - {name: ezpublish.search.solr.field_mapper.location}
+        lazy: true
+
 
     Gie\FacetBundle\Content\Search\Helper\ContentTypeFacetSearchHelper:
         tags:
