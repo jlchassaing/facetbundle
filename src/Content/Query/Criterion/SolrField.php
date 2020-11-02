@@ -37,7 +37,7 @@ class SolrField extends Criterion implements CriterionInterface
         $this->target = $target;
     }
 
-    public function getSpecifications()
+    public function getSpecifications(): array
     {
         return array(
             new Specifications(

@@ -36,7 +36,7 @@ class CustomDate extends Criterion implements CriterionInterface
         parent::__construct($target, null, $value);
     }
 
-    public function getSpecifications()
+    public function getSpecifications(): array
     {
         return array(
             new Specifications(

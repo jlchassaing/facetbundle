@@ -36,7 +36,7 @@ class Tag extends Criterion implements CriterionInterface
         parent::__construct(null, null, $value);
     }
 
-    public function getSpecifications()
+    public function getSpecifications(): array
     {
         return array(
             new Specifications(
